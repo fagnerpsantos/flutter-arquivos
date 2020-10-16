@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:lifepet_app/models/anotacao_model.dart';
 import 'package:lifepet_app/models/consulta_model.dart';
 import 'package:lifepet_app/models/pet_model.dart';
 import 'package:lifepet_app/screens/login/login_screen.dart';
 import 'package:lifepet_app/screens/perfil_pet/perfil_pet_screen.dart';
+import 'package:lifepet_app/services/anotacao_service.dart';
 import 'package:lifepet_app/services/consulta_service.dart';
 import 'package:lifepet_app/services/pet_service.dart';
 
-class FormCadastroConsultaScreen extends StatefulWidget {
+class FormCadastroAnotacaoScreen extends StatefulWidget {
   int id;
 
-  FormCadastroConsultaScreen({this.id});
+  FormCadastroAnotacaoScreen({this.id});
 
   @override
-  _FormCadastroConsultaScreenState createState() => _FormCadastroConsultaScreenState();
+  _FormCadastroAnotacaoScreenState createState() => _FormCadastroAnotacaoScreenState();
 }
 
-class _FormCadastroConsultaScreenState extends State<FormCadastroConsultaScreen> {
+class _FormCadastroAnotacaoScreenState extends State<FormCadastroAnotacaoScreen> {
   final _tituloController = TextEditingController();
-  final _dataController = TextEditingController();
+  final _conteudoController = TextEditingController();
   DateTime selectedDate = DateTime.now();
   final PetService petService = PetService();
-  final ConsultaService consultaService = ConsultaService();
+  final AnotacaoService consultaService = AnotacaoService();
   Pet pet;
   Future<Pet> _loadPet;
 
@@ -40,7 +42,7 @@ class _FormCadastroConsultaScreenState extends State<FormCadastroConsultaScreen>
             pet = snapshot.data;
             return Scaffold(
               appBar: AppBar(
-                title: Text("Cadastro de Consulta"),
+                title: Text("Cadastro de Anotacao"),
               ),
               body: SingleChildScrollView(
                 child: Padding(
@@ -54,16 +56,10 @@ class _FormCadastroConsultaScreenState extends State<FormCadastroConsultaScreen>
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(labelText: "Título"),
                         ),
-                        GestureDetector(
-                          onTap: () => _selectDate(context),
-                          child: AbsorbPointer(
-                            child: TextFormField(
-                              controller: _dataController,
-                              keyboardType: TextInputType.datetime,
-                              decoration: InputDecoration(
-                                  labelText: selectedDate.toString()),
-                            ),
-                          ),
+                        TextFormField(
+                          controller: _conteudoController,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(labelText: "Conteúdo"),
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 20, bottom: 20),
@@ -72,14 +68,14 @@ class _FormCadastroConsultaScreenState extends State<FormCadastroConsultaScreen>
                             width: double.infinity,
                             child: RaisedButton(
                               onPressed: () {
-                                Consulta novoConsulta = Consulta(
+                                Anotacao novoAnotacao = Anotacao(
                                     titulo: _tituloController.text,
-                                    data: selectedDate.toString(),
+                                    conteudo: _conteudoController.text,
                                     pet: pet.id.toString()
                                 );
-                                // consultaService.addConsulta(novoConsulta);
-                                // consultaService.getAllConsultas();
-                                consultaService.getConsultasPet(pet.id.toString());
+                                // consultaService.addAnotacao(novoAnotacao);
+                                consultaService.getAllAnotacaos();
+                                // consultaService.getAnotacaosPet(pet.id.toString());
 
                                 // Navigator.of(context).push(
                                 //   MaterialPageRoute(

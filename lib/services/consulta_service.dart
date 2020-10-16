@@ -7,6 +7,7 @@ import 'dart:convert';
 class ConsultaService {
   Random random = new Random();
   List<Consulta> _consultaList = [];
+  List<Consulta> _consultaPet = [];
 
 
   void addConsulta(Consulta consulta){
@@ -17,6 +18,13 @@ class ConsultaService {
     final dataList = await FileUtil.getData("consulta");
     _consultaList = dataList.map((consultas) => Consulta.fromJson(jsonDecode(consultas))).toList();
     return _consultaList;
+  }
+
+  Future<List> getConsultasPet(String id) async {
+    final dataList = await FileUtil.getData("consulta");
+    _consultaList = dataList.map((consultas) => Consulta.fromJson(jsonDecode(consultas))).toList();
+    _consultaPet = _consultaList.where((consulta) => consulta.pet == id).toList();
+    return _consultaPet;
   }
 
 

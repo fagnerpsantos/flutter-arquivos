@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lifepet_app/models/pet_model.dart';
+import 'package:lifepet_app/screens/anotacao_pet/anotacao_pet_screen.dart';
 import 'package:lifepet_app/screens/consulta_pet/consulta_pet_screen.dart';
 import 'package:lifepet_app/screens/form_cadastro_consulta/form_cadastro_consulta_screen.dart';
 import 'package:lifepet_app/screens/perfil_pet/perfil_pet_screen.dart';
@@ -127,6 +128,11 @@ class _CustomNavbarState extends State<CustomNavbar> {
                     setState(() {
                       widget.paginaAberta = 3;
                     });
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (_) => AnotacaoPetScreen(id: widget.pet.id,),
+                      ),
+                    );
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

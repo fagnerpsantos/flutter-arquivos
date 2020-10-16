@@ -1,36 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:lifepet_app/models/consulta_model.dart';
+import 'package:lifepet_app/models/anotacao_model.dart';
 import 'package:lifepet_app/models/pet_model.dart';
-import 'package:lifepet_app/models/consulta_model.dart';
+import 'package:lifepet_app/screens/anotacao_pet/components/consulta_card.dart';
 import 'package:lifepet_app/screens/components/custom_navbar.dart';
-import 'package:lifepet_app/screens/form_cadastro_consulta/form_cadastro_consulta_screen.dart';
-import 'package:lifepet_app/screens/form_cadastro_consulta/form_cadastro_consulta_screen.dart';
-import 'package:lifepet_app/screens/consulta_pet/components/consulta_card.dart';
-import 'package:lifepet_app/services/consulta_service.dart';
+import 'package:lifepet_app/screens/form_cadastro_anotacao/form_cadastro_anotacao_screen.dart';
+import 'package:lifepet_app/services/anotacao_service.dart';
 import 'package:lifepet_app/services/pet_service.dart';
 
-class ConsultaPetScreen extends StatefulWidget {
+class AnotacaoPetScreen extends StatefulWidget {
   final int id;
 
-  ConsultaPetScreen({this.id});
+  AnotacaoPetScreen({this.id});
 
   @override
-  _ConsultaPetScreenState createState() => _ConsultaPetScreenState();
+  _AnotacaoPetScreenState createState() => _AnotacaoPetScreenState();
 }
 
-class _ConsultaPetScreenState extends State<ConsultaPetScreen> {
-  List<Consulta> consultaList = List();
+class _AnotacaoPetScreenState extends State<AnotacaoPetScreen> {
+  List<Anotacao> anotacaoList = List();
   final PetService petService = PetService();
-  final ConsultaService consultaService = ConsultaService();
+  final AnotacaoService anotacaoService = AnotacaoService();
   Pet pet;
   Future<Pet> _loadPet;
-  Future<List> _loadConsultas;
+  Future<List> _loadAnotacaos;
 
   @override
   void initState() {
     // TODO: implement initState
     _loadPet = _getPet(widget.id);
-    _loadConsultas = _getConsultas(widget.id.toString());
+    _loadAnotacaos = _getAnotacaos(widget.id.toString());
     super.initState();
   }
 
@@ -77,7 +75,7 @@ class _ConsultaPetScreenState extends State<ConsultaPetScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Consultas",
+                      Text("Anotacaos",
                         style: TextStyle(
                             fontFamily: "Montserrat",
                             fontSize: 24,
@@ -87,17 +85,17 @@ class _ConsultaPetScreenState extends State<ConsultaPetScreen> {
                   ),
                 ),
                 FutureBuilder(
-                  future: _loadConsultas,
+                  future: _loadAnotacaos,
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.hasData) {
-                      consultaList = snapshot.data;
+                      anotacaoList = snapshot.data;
                       return Expanded(
                         child: ListView.builder(
                           padding: EdgeInsets.all(10),
-                          itemCount: consultaList.length,
+                          itemCount: anotacaoList.length,
                           itemBuilder: (context, index) {
-                            return consultaCard(
-                                context, index, consultaList[index]);
+                            return anotacaoCard(
+                                context, index, anotacaoList[index]);
                           },
                         ),
                       );
@@ -107,7 +105,7 @@ class _ConsultaPetScreenState extends State<ConsultaPetScreen> {
                       );
                     } else {
                       return Center(
-                        child: Text("Este pet não possui consultas"),
+                        child: Text("Este pet não possui anotacaos"),
                       );
                     }
                   }
@@ -119,7 +117,7 @@ class _ConsultaPetScreenState extends State<ConsultaPetScreen> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) =>
-                        FormCadastroConsultaScreen(id: pet.id,),
+                        FormCadastroAnotacaoScreen(id: pet.id,),
                   ),
                 );
               },
@@ -128,7 +126,7 @@ class _ConsultaPetScreenState extends State<ConsultaPetScreen> {
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation
                 .centerDocked,
-            bottomNavigationBar: CustomNavbar(paginaAberta: 2, pet: pet,),
+            bottomNavigationBar: CustomNavbar(paginaAberta: 3, pet: pet,),
           );
         } else {
           return Center(
@@ -139,8 +137,8 @@ class _ConsultaPetScreenState extends State<ConsultaPetScreen> {
     );
   }
 
-  Future<List> _getConsultas(String id) async {
-    return await consultaService.getConsultasPet(id);
+  Future<List> _getAnotacaos(String id) async {
+    return await anotacaoService.getAnotacaosPet(id);
   }
 
   Future<Pet> _getPet(int id) async {

@@ -16,7 +16,6 @@ class FileUtil {
     final file = await getFile(entidade);
     file.writeAsString(data + '\n',
         mode: FileMode.append);
-    file.readAsString().then((value) => print(value));
   }
 
 
