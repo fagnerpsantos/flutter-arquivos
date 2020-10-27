@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:lifepet_app/models/usuario_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 

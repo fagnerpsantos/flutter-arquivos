@@ -42,7 +42,9 @@ void _exibirDialogo(BuildContext context, Consulta consulta) {
   ConsultaService cs = ConsultaService();
   Widget cancelaButton = FlatButton(
     child: Text("Cancelar"),
-    onPressed:  () {},
+    onPressed:  () {
+      Navigator.of(context).pop();
+    },
   );
   Widget removerButton = FlatButton(
     child: Text("Remover"),
